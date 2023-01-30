@@ -1,0 +1,50 @@
+{
+  "help": {
+    "ru": "Somnauts - это плеер интерактивных книг.\nИспользуйте следующие команды:\n/help - чтобы посмотреть этот список ещё раз",
+    "en": "Somnauts is an interactive books player"
+  },
+  "selectBook": {
+    "ru": "Выберите книгу:",
+    "en": "Select a book:"
+  },
+  "selectBookDescription": {
+    "ru": "<b>{0}</b>\n{1}\nЯзыки: {2}\nКол-во сохранений: {3}\nЧитать: {4}",
+    "en": "Select a book: "
+  },
+  "selectBookSave": {
+    "ru": "Выберите сохранение или создайте новое:",
+    "en": "Select a save:"
+  },
+  "selectBookSaveItem": {
+    "ru": "Создано: {0}\nПоследний раз запущено: {1}\nЯзык: {2}\nЗагрузить: {3}",
+    "en": "Select a save:"
+  },
+  "selectBookSaveCreate": {
+    "ru": "Создать новое сохранение: {0}",
+    "en": "Select a save:"
+  },
+  "wrongLoadCode": {
+    "ru": "Такого сохранения не существует",
+    "en": "Select a save:"
+  },
+  "bookDoesntExists": {
+    "ru": "Такой книги не сущетсвует",
+    "en": "Select a save:"
+  },
+  "selectUiLang": {
+    "ru": "Select interface language:\nВыберите язык интерфейса:",
+    "en": "Select interface language:\nВыберите язык интерфейса:"
+  },
+  "uiLangSelected": {
+    "ru": "Язык интерфейса изменён на русский",
+    "en": "Interface language changed to English"
+  },
+  "selectBookLang": {
+    "ru": "Выберите язык этой книги:",
+    "en": "Select current book language:"
+  },
+  "selectBookLangNoCurrentBook": {
+    "ru": "В данный момент ни одна книга не читается, чтобы выбрать для неё язык. Используйте команду /books чтобы начать читать новую книгу.",
+    "en": "You can't select current book language because you don't have a current book. Use /books command to start a new book."
+  }
+}
