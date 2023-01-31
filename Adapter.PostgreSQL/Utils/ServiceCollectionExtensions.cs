@@ -1,5 +1,7 @@
-﻿using Adapter.PostgreSQL.Telegram;
+﻿using Adapter.PostgreSQL.Services;
+using Adapter.PostgreSQL.Telegram;
 using Adapter.TelegramBot.Interfaces;
+using Core.Interfaces.Driven;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +16,8 @@ public static class ServiceCollectionExtensions
         services.AddDbContext<SomnContext>(builder => builder.UseNpgsql(connectionString));
 
         services.AddScoped<ITelegramUserStore, TelegramUserStoreSql>();
+
+        services.AddScoped<IUserStore, UserStoreSql>();
 
         return services;
     }

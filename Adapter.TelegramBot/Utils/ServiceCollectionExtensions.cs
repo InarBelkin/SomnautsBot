@@ -26,7 +26,7 @@ public static class ServiceCollectionExtensions
         services.AddLocalizations();
 
         services.AddScoped<ITelegramUserProvider, TelegramUserProvider>();
-        services.AddScoped<IUserProvider>(provider => provider.GetRequiredService<TelegramUserProvider>());
+        services.AddScoped<IUserProvider>(provider => provider.GetRequiredService<ITelegramUserProvider>());
 
         return services;
     }

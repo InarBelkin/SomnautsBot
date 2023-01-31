@@ -6,7 +6,7 @@ using Telegram.Bot.Types;
 
 namespace Adapter.TelegramBot.Services;
 
-public class TelegramUserProvider : IUserProvider, ITelegramUserProvider
+public class TelegramUserProvider : ITelegramUserProvider
 {
     private readonly ITelegramUserStore _userStore;
 

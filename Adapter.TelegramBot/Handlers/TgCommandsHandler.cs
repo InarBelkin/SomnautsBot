@@ -1,6 +1,7 @@
 ﻿using Adapter.TelegramBot.Interfaces;
 using Adapter.TelegramBot.Utils;
 using Telegram.Bot;
+using Telegram.Bot.Types.ReplyMarkups;
 using Utils.Language;
 
 namespace Adapter.TelegramBot.Handlers;
@@ -31,6 +32,10 @@ public class TgCommandsHandler : ITgCommandsHandler
             case ["start"] or ["help"]:
                 await StartCommand();
                 break;
+
+            case ["interfacelang"]:
+                await InterfaceLangCommand();
+                break;
         }
     }
 
@@ -39,5 +44,16 @@ public class TgCommandsHandler : ITgCommandsHandler
         var user = await _userProvider.GetUser();
         await _bot.SendTextMessageAsync(user.TelegramId,
             _uiResources.Help.WithErrorString(user.InterfaceLang));
+    }
+
+    private async Task InterfaceLangCommand()
+    {
+        var user = await _userProvider.GetUser();
+        await _bot.SendTextMessageAsync(user.TelegramId,
+            _uiResources.SelectUiLang.WithErrorString(user.InterfaceLang),
+            replyMarkup: new InlineKeyboardMarkup(LangEnum.List.Select(l =>
+                    InlineKeyboardButton.WithCallbackData(l.LangName, $"#interfacelang_{l.Value}"))
+                .Select(b => new[] { b }))
+        );
     }
 }
