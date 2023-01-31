@@ -1,4 +1,5 @@
 ﻿using Adapter.TelegramBot.Handlers;
+using Adapter.TelegramBot.Interfaces;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
@@ -12,12 +13,15 @@ public interface ITgUpdateHandler
 public class TgUpdateHandler : ITgUpdateHandler
 {
     private readonly ITgCommandsHandler _commandsHandler;
+    private readonly ITelegramUserProvider _telegramUserProvider;
     private readonly ITgButtonsHandler _tgButtonsHandler;
 
-    public TgUpdateHandler(ITgCommandsHandler commandsHandler, ITgButtonsHandler tgButtonsHandler)
+    public TgUpdateHandler(ITgCommandsHandler commandsHandler, ITgButtonsHandler tgButtonsHandler,
+        ITelegramUserProvider telegramUserProvider)
     {
         _commandsHandler = commandsHandler;
         _tgButtonsHandler = tgButtonsHandler;
+        _telegramUserProvider = telegramUserProvider;
     }
 
     public async Task InvokeAsync(Update update, CancellationToken token)
@@ -36,13 +40,13 @@ public class TgUpdateHandler : ITgUpdateHandler
     private async Task HandleMessage(Message msg)
     {
         if (msg.From is null || msg.Text is null) return;
-        //var user = await _usersService.GetOrCreateUser(msg.From); TODO: users 1
+        _telegramUserProvider.AddUser(msg.From);
         if (msg.Text.StartsWith("/") && msg.Text.Length > 1) await _commandsHandler.InvokeAsync(msg.Text);
     }
 
     private async Task HandleButton(CallbackQuery updateCallbackQuery)
     {
-        //var user = await _usersService.GetOrCreateUser(updateCallbackQuery.From); TODO: users 2
+        _telegramUserProvider.AddUser(updateCallbackQuery.From);
         await _tgButtonsHandler.InvokeAsync(updateCallbackQuery);
     }
 }

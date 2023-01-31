@@ -10,13 +10,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Adapter.TelegramBot\Adapter.TelegramBot.csproj" />
-        <ProjectReference Include="..\Adapter.WebApi\Adapter.WebApi.csproj" />
-        <ProjectReference Include="..\Core\Core.csproj" />
+        <ProjectReference Include="..\Adapter.PostgreSQL\Adapter.PostgreSQL.csproj"/>
+        <ProjectReference Include="..\Adapter.TelegramBot\Adapter.TelegramBot.csproj"/>
+        <ProjectReference Include="..\Adapter.WebApi\Adapter.WebApi.csproj"/>
+        <ProjectReference Include="..\Core\Core.csproj"/>
     </ItemGroup>
 
 </Project>

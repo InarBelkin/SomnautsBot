@@ -1,7 +1,6 @@
 ﻿using Adapter.TelegramBot.Utils;
 using Telegram.Bot;
 using Telegram.Bot.Types;
-using Utils.Language;
 
 namespace Adapter.TelegramBot.Handlers;
 
