@@ -5,6 +5,7 @@ using Core.Interfaces.Driving;
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
+using Utils;
 using Utils.Language;
 
 namespace Adapter.TelegramBot.Handlers;
@@ -16,18 +17,20 @@ public interface ITgCommandsHandler
 
 public class TgCommandsHandler : ITgCommandsHandler
 {
+    private readonly IBooksService _booksService;
     private readonly ITelegramBotClient _bot;
+    private readonly ISavesService _savesService;
     private readonly UiLocalization _uiResources;
     private readonly ITelegramUserProvider _userProvider;
-    private readonly IBooksService _booksService;
 
     public TgCommandsHandler(UiLocalization uiResources, ITelegramBotClient bot, ITelegramUserProvider userProvider,
-        IBooksService booksService)
+        IBooksService booksService, ISavesService savesService)
     {
         _uiResources = uiResources;
         _bot = bot;
         _userProvider = userProvider;
         _booksService = booksService;
+        _savesService = savesService;
     }
 
     public async Task InvokeAsync(string command)
@@ -44,9 +47,11 @@ public class TgCommandsHandler : ITgCommandsHandler
             case ["books"]:
                 await BooksCommand();
                 break;
+            case ["read", { } bookStringId]:
+                await ReadCommand(bookStringId);
+                break;
         }
     }
-
 
     private async Task StartCommand()
     {
@@ -85,5 +90,38 @@ public class TgCommandsHandler : ITgCommandsHandler
         }
 
         await _bot.SendTextMessageAsync(user.TelegramId, text.ToString(), ParseMode.Html);
+    }
+
+    private async Task ReadCommand(string bookStringId)
+    {
+        var user = await _userProvider.GetUser();
+        const string dateTimeFormat = "dd MMMM yyyy HH:mm";
+        if (Guid.TryParse(bookStringId, out var genId))
+        {
+            var result = await _savesService.GetSavesOfThisUser(genId);
+            await result.IfSuccAsync(async saves =>
+                {
+                    var text = new StringBuilder();
+                    text.Append(_uiResources.SelectBookSave.WithErrorString(user.InterfaceLang));
+                    text.Append("\n\n");
+                    foreach (var (id, createdDate, updatedDate, langEnum) in saves)
+                    {
+                        text.AppendFormat(_uiResources.SelectBookSaveItem.WithErrorString(user.InterfaceLang),
+                            createdDate.ToUniversalTime().ToString(dateTimeFormat) + " UTC",
+                            updatedDate.ToUniversalTime().ToString(dateTimeFormat) + " UTC",
+                            langEnum,
+                            $"/load_{id}");
+                        text.Append("\n\n");
+                    }
+
+                    text.AppendFormat(_uiResources.SelectBookSaveCreate.WithErrorString(user.InterfaceLang),
+                        $"/newsave_{genId:N}");
+                    await _bot.SendTextMessageAsync(user.TelegramId, text.ToString());
+                }
+            );
+            if (result.IsSuccess) return;
+        }
+
+        await _bot.SendTextMessageAsync(user.TelegramId, "Book's id isn't correct");
     }
 }

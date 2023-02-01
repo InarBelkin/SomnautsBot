@@ -19,7 +19,7 @@ public class UserService : IUserService
 
     public async Task<UserModel> GetUser()
     {
-        return await GetUserOrNull() ?? throw new UserDoesntExistsException();
+        return await GetUserOrNull() ?? throw new UserDoesntExistException();
     }
 
     public async Task<UserModel?> GetUserOrNull()

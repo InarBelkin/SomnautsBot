@@ -11,9 +11,9 @@ namespace Core.Services;
 public class BooksService : IBooksService
 {
     private readonly IBooksStore _booksStore;
-    private readonly IUserService _userService;
-    private readonly ISavesStore _savesStore;
     private readonly BooksOptions _options;
+    private readonly ISavesStore _savesStore;
+    private readonly IUserService _userService;
 
     public BooksService(IOptions<BooksOptions> options, IBooksStore booksStore, IUserService userService,
         ISavesStore savesStore)

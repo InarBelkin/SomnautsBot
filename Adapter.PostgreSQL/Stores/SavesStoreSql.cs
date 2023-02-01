@@ -1,4 +1,7 @@
 ﻿using Core.Interfaces.Driven;
+using Core.Models.Exceptions;
+using Core.Models.Save;
+using LanguageExt.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace Adapter.PostgreSQL.Stores;
@@ -12,11 +15,15 @@ public class SavesStoreSql : ISavesStore
         _db = db;
     }
 
-    public async Task<Dictionary<Guid, int>> GetSavesCountByUserId(int userId)
+    public async Task<Result<IEnumerable<BookSaveItemModel>>> GetSavesByUser(int userId, Guid genId)
     {
-        var query = _db.Books.Select(b =>
-            new KeyValuePair<Guid, int>(b.Description.GenId, b.Saves.Count(s => s.User.Id == userId)));
+        var isBookExist =
+            await _db.Books.Where(b => b.Description.GenId == genId && b.IsVisibleToUsers).CountAsync() == 1;
+        if (!isBookExist) return new Result<IEnumerable<BookSaveItemModel>>(new BookDoesntExistException());
 
-        return await query.ToDictionaryAsync(p => p.Key, p => p.Value);
+        var saves = await _db.BookSaves.Where(s => s.Book.Description.GenId == genId && s.User.Id == userId)
+            .Select(s => new BookSaveItemModel(s.Id, s.CreatedDate, s.UpdatedDate, s.Language))
+            .ToListAsync();
+        return saves;
     }
 }

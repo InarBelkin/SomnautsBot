@@ -1,6 +1,9 @@
-﻿namespace Core.Interfaces.Driven;
+﻿using Core.Models.Save;
+using LanguageExt.Common;
+
+namespace Core.Interfaces.Driven;
 
 public interface ISavesStore
 {
-    public Task<Dictionary<Guid, int>> GetSavesCountByUserId(int userId);
+    Task<Result<IEnumerable<BookSaveItemModel>>> GetSavesByUser(int userId, Guid genId);
 }

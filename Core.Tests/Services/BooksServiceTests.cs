@@ -11,18 +11,11 @@ namespace Core.Tests.Services;
 
 public class BooksServiceTests
 {
-    private readonly Fixture _fixture = new();
     private readonly Mock<IBooksStore> _booksStoreMock = new();
+    private readonly Fixture _fixture = new();
     private readonly Mock<IOptions<BooksOptions>> _optionsMock = new();
-    private readonly Mock<IUserService> _userServiceMock = new();
     private readonly Mock<ISavesStore> _savesStoreMock = new();
-
-    public async Task GetListOfBooksWithCountOfSaves_MapDictIsCorrect()
-    {
-        var books = _fixture.CreateMany<BookHandleModel>(10).ToList();
-
-        var countsOfSaves = books.ToDictionary(b => b.Description.GenId, _ => Random.Shared.Next());
-    }
+    private readonly Mock<IUserService> _userServiceMock = new();
 
 // 1. Test that the existing books are correctly updated in the database.
     [Fact]

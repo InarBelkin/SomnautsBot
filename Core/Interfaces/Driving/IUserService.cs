@@ -1,11 +1,12 @@
-﻿using Core.Models.User;
+﻿using Core.Models.Exceptions;
+using Core.Models.User;
 using Utils.Language;
 
 namespace Core.Interfaces.Driving;
 
 public interface IUserService
 {
-    /// <exception cref="Core.Models.Exceptions.UserDoesntExistsException">Throws if all user's providers have no users</exception>
+    /// <exception cref="UserDoesntExistException">Throws if all user's providers have no users</exception>
     public Task<UserModel> GetUser();
 
     Task<UserModel?> GetUserOrNull();
