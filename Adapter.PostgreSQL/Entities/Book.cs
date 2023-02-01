@@ -1,4 +1,6 @@
-﻿namespace Adapter.PostgreSQL.Entities;
+﻿using Core.Models.Book;
+
+namespace Adapter.PostgreSQL.Entities;
 
 public class Book
 {
@@ -7,5 +9,5 @@ public class Book
     public required string ContainingFolder { get; set; }
     public required bool IsVisibleToUsers { get; set; }
 
-    public required BookDescriptionEntity Description { get; set; }
+    public required BookDescriptionModel Description { get; set; }
 }

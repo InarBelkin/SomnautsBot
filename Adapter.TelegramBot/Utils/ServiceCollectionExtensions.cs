@@ -15,7 +15,6 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddTelegramBot(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<TelegramOptions>(configuration.GetSection("TelegramOptions"));
         services.AddSingleton<ITelegramBotClient>(provider =>
             new TelegramBotClient(provider.GetRequiredService<IOptions<TelegramOptions>>().Value.Token));
         services.AddHostedService<TgBotHostedService>();

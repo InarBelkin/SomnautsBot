@@ -1,4 +1,4 @@
-﻿using Adapter.PostgreSQL.Services;
+﻿using Adapter.PostgreSQL.Stores;
 using Adapter.PostgreSQL.Telegram;
 using Adapter.TelegramBot.Interfaces;
 using Core.Interfaces.Driven;
@@ -18,6 +18,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ITelegramUserStore, TelegramUserStoreSql>();
 
         services.AddScoped<IUserStore, UserStoreSql>();
+        services.AddScoped<IBooksStore, BooksStoreSql>();
 
         return services;
     }

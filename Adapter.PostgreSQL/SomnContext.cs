@@ -34,6 +34,11 @@ public class SomnContext : DbContext
             .OnDelete(DeleteBehavior.SetNull);
 
         modelBuilder.Entity<Book>()
-            .OwnsOne(b => b.Description);
+            .OwnsOne(b => b.Description, builder =>
+                {
+                    builder.HasIndex(bm => bm.GenId).IsUnique();
+                    builder.Property(bm => bm.Languages).HasColumnType("jsonb");
+                }
+            );
     }
 }

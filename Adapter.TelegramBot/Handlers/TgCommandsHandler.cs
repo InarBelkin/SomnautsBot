@@ -32,11 +32,17 @@ public class TgCommandsHandler : ITgCommandsHandler
             case ["start"] or ["help"]:
                 await StartCommand();
                 break;
-
             case ["interfacelang"]:
                 await InterfaceLangCommand();
                 break;
+            case ["books"]:
+                await BooksCommand();
+                break;
         }
+    }
+
+    private async Task BooksCommand()
+    {
     }
 
     private async Task StartCommand()

@@ -2,7 +2,7 @@
 using Core.Models.User;
 using Microsoft.EntityFrameworkCore;
 
-namespace Adapter.PostgreSQL.Services;
+namespace Adapter.PostgreSQL.Stores;
 
 public class UserStoreSql : IUserStore
 {
