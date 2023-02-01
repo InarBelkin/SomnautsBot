@@ -11,17 +11,29 @@ namespace Core.Services;
 public class BooksService : IBooksService
 {
     private readonly IBooksStore _booksStore;
+    private readonly IUserService _userService;
+    private readonly ISavesStore _savesStore;
     private readonly BooksOptions _options;
 
-    public BooksService(IOptions<BooksOptions> options, IBooksStore booksStore)
+    public BooksService(IOptions<BooksOptions> options, IBooksStore booksStore, IUserService userService,
+        ISavesStore savesStore)
     {
         _booksStore = booksStore;
+        _userService = userService;
+        _savesStore = savesStore;
         _options = options.Value;
     }
 
-    public async Task<IList<BookModel>> GetListOfBooks(bool onlyVisible = true)
+    public async Task<IList<BookHandleModel>> GetListOfHandleBooks(bool onlyVisible = true)
     {
-        return await _booksStore.GetAll(true);
+        return await _booksStore.GetAll(onlyVisible);
+    }
+
+    public async Task<IEnumerable<BookModel>> GetBooks()
+    {
+        var user = await _userService.GetUserOrNull();
+        var books = await _booksStore.GetAllModels(user?.Id);
+        return books;
     }
 
     public async Task<ScanBooksResultModel> ScanAvailableBooks(ScanBooksParamsModel scanBooksParams)
@@ -111,7 +123,7 @@ public class BooksService : IBooksService
             if (scannedBooks.Where(b => b.bookDescription.GenId == existingBook.Description.GenId)
                 .TryGetFirst(out var scannedBook))
             {
-                await _booksStore.Update(new BookModel(
+                await _booksStore.Update(new BookHandleModel(
                     scannedBook.path,
                     Description: scannedBook.bookDescription,
                     IsVisibleToUsers: scanParams.SetVisibleFoundBooks || existingBook.IsVisibleToUsers));
@@ -133,6 +145,6 @@ public class BooksService : IBooksService
             }
 
         await _booksStore
-            .AddRange(scannedBooks.Select(sb => new BookModel(sb.path, true, sb.bookDescription)));
+            .AddRange(scannedBooks.Select(sb => new BookHandleModel(sb.path, true, sb.bookDescription)));
     }
 }

@@ -14,15 +14,23 @@ public class BooksStoreSql : IBooksStore
         _db = db;
     }
 
-    public async Task<IList<BookModel>> GetAll(bool onlyVisible)
+    public async Task<IList<BookHandleModel>> GetAll(bool onlyVisible)
     {
         return await _db.Books.Where(b => !onlyVisible || b.IsVisibleToUsers)
-            .Select(b => new BookModel(b.ContainingFolder, b.IsVisibleToUsers, b.Description))
+            .Select(b => new BookHandleModel(b.ContainingFolder, b.IsVisibleToUsers, b.Description))
             .AsNoTracking()
             .ToListAsync();
     }
 
-    public async Task Update(BookModel bookModel)
+    public async Task<IEnumerable<BookModel>> GetAllModels(int? userId)
+    {
+        return await _db.Books
+            .Where(b => b.IsVisibleToUsers)
+            .Select(b => new BookModel(b.Description.GenId, b.Description.Name, b.Description.Description,
+                b.Description.Languages, b.Saves.Count(s => s.User.Id == userId))).ToListAsync();
+    }
+
+    public async Task Update(BookHandleModel bookModel)
     {
         var book = await _db.Books.SingleAsync(b => b.Description.GenId == bookModel.Description.GenId);
         book.ContainingFolder = bookModel.ContainingFolder;
@@ -36,7 +44,7 @@ public class BooksStoreSql : IBooksStore
         await _db.Books.Where(b => b.Description.GenId == GenId).ExecuteDeleteAsync();
     }
 
-    public async Task AddRange(IEnumerable<BookModel> bookModel)
+    public async Task AddRange(IEnumerable<BookHandleModel> bookModel)
     {
         _db.AddRange(bookModel.Select(bm => new Book
         {

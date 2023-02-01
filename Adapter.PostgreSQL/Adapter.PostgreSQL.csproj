@@ -8,14 +8,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Adapter.TelegramBot\Adapter.TelegramBot.csproj"/>
-        <ProjectReference Include="..\Core\Core.csproj"/>
-        <ProjectReference Include="..\Utils\Utils.csproj"/>
+        <ProjectReference Include="..\Adapter.TelegramBot\Adapter.TelegramBot.csproj" />
+        <ProjectReference Include="..\Core\Core.csproj" />
+        <ProjectReference Include="..\Utils\Utils.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Ardalis.SmartEnum.EFCore" Version="7.0.0"/>
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.1"/>
+        <PackageReference Include="Ardalis.SmartEnum.EFCore" Version="7.0.0" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.1" />
     </ItemGroup>
 
 </Project>

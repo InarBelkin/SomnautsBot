@@ -4,11 +4,12 @@ namespace Core.Interfaces.Driven;
 
 public interface IBooksStore
 {
-    public Task<IList<BookModel>> GetAll(bool onlyVisible);
+    public Task<IList<BookHandleModel>> GetAll(bool onlyVisible);
+    public Task<IEnumerable<BookModel>> GetAllModels(int? userId);
 
-    public Task Update(BookModel bookModel);
+    public Task Update(BookHandleModel bookModel);
 
     public Task Remove(Guid GenId);
 
-    public Task AddRange(IEnumerable<BookModel> bookModel);
+    public Task AddRange(IEnumerable<BookHandleModel> bookModel);
 }

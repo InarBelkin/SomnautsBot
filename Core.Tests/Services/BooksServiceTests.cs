@@ -1,5 +1,6 @@
 ﻿using AutoFixture;
 using Core.Interfaces.Driven;
+using Core.Interfaces.Driving;
 using Core.Models.Book;
 using Core.Services;
 using Core.Utils;
@@ -10,9 +11,18 @@ namespace Core.Tests.Services;
 
 public class BooksServiceTests
 {
-    private readonly Mock<IBooksStore> _booksStoreMock = new();
     private readonly Fixture _fixture = new();
+    private readonly Mock<IBooksStore> _booksStoreMock = new();
     private readonly Mock<IOptions<BooksOptions>> _optionsMock = new();
+    private readonly Mock<IUserService> _userServiceMock = new();
+    private readonly Mock<ISavesStore> _savesStoreMock = new();
+
+    public async Task GetListOfBooksWithCountOfSaves_MapDictIsCorrect()
+    {
+        var books = _fixture.CreateMany<BookHandleModel>(10).ToList();
+
+        var countsOfSaves = books.ToDictionary(b => b.Description.GenId, _ => Random.Shared.Next());
+    }
 
 // 1. Test that the existing books are correctly updated in the database.
     [Fact]
@@ -26,9 +36,7 @@ public class BooksServiceTests
         };
 
         var firstBookGuid = Guid.Parse("00000000-0000-0000-0000-000000000001");
-
-        //  var existingBooks = _fixture.CreateMany<BookModel>(2).ToList();
-        var existingBooks = new List<BookModel>
+        var existingBooks = new List<BookHandleModel>
         {
             new("oldPath1", true, _fixture.Create<BookDescriptionModel>() with
             {
@@ -47,13 +55,14 @@ public class BooksServiceTests
 
 
         _booksStoreMock.Setup(b => b.GetAll(false)).ReturnsAsync(existingBooks.ToList());
-        var booksService = new BooksService(_optionsMock.Object, _booksStoreMock.Object);
+        var booksService = new BooksService(_optionsMock.Object, _booksStoreMock.Object, _userServiceMock.Object,
+            _savesStoreMock.Object);
         // Act
         await booksService.UpdateBooks(scanParams, scannedBooks.ToList());
 
         // Assert
         _booksStoreMock.Verify(b => b.Update(
-                It.Is<BookModel>(bm =>
+                It.Is<BookHandleModel>(bm =>
                     bm.ContainingFolder == "newPath1" &&
                     bm.IsVisibleToUsers == existingBooks[0].IsVisibleToUsers &&
                     bm.Description == scannedBooks[0].bookDescription
@@ -61,8 +70,9 @@ public class BooksServiceTests
             Times.Once);
 
         _booksStoreMock.Verify<Task>(b =>
-            b.AddRange(It.Is<IEnumerable<BookModel>>(e =>
-                e.Count() == 1 && e.First() == new BookModel("newPath2", true, scannedBooks[1].bookDescription))));
+            b.AddRange(It.Is<IEnumerable<BookHandleModel>>(e =>
+                e.Count() == 1 &&
+                e.First() == new BookHandleModel("newPath2", true, scannedBooks[1].bookDescription))));
 
         _booksStoreMock.Verify(b => b.Remove(It.IsAny<Guid>()), Times.Never);
     }

@@ -17,9 +17,9 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<ITelegramUserStore, TelegramUserStoreSql>();
 
-        services.AddScoped<IUserStore, UserStoreSql>();
-        services.AddScoped<IBooksStore, BooksStoreSql>();
-
+        services.AddScoped<IUserStore, UserStoreSql>()
+            .AddScoped<IBooksStore, BooksStoreSql>()
+            .AddScoped<ISavesStore, SavesStoreSql>();
         return services;
     }
 }

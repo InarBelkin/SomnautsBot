@@ -25,7 +25,7 @@ public class BooksHandleController : ControllerBase
     [HttpGet("list")]
     public async Task<IActionResult> GetLists()
     {
-        var result = await _booksService.GetListOfBooks();
+        var result = await _booksService.GetListOfHandleBooks();
         return Ok(result);
     }
 }

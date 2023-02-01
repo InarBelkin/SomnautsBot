@@ -1,5 +1,6 @@
 ﻿using Core.Interfaces.Driven;
 using Core.Interfaces.Driving;
+using Core.Models.Exceptions;
 using Core.Models.User;
 using Utils.Language;
 
@@ -18,9 +19,13 @@ public class UserService : IUserService
 
     public async Task<UserModel> GetUser()
     {
+        return await GetUserOrNull() ?? throw new UserDoesntExistsException();
+    }
+
+    public async Task<UserModel?> GetUserOrNull()
+    {
         var provider = _userProviders.FirstOrDefault(p => p.HasUser());
-        if (provider == null) throw new ArgumentException("User hasn't been added");
-        return await provider.GetUser();
+        return provider == null ? null : await provider.GetUser();
     }
 
     public async Task UpdateLang(LangEnum lang)

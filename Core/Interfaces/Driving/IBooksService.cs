@@ -4,7 +4,8 @@ namespace Core.Interfaces.Driving;
 
 public interface IBooksService
 {
-    public Task<IList<BookModel>> GetListOfBooks(bool onlyVisible = true);
+    Task<IList<BookHandleModel>> GetListOfHandleBooks(bool onlyVisible = true);
+    Task<IEnumerable<BookModel>> GetBooks();
 
-    public Task<ScanBooksResultModel> ScanAvailableBooks(ScanBooksParamsModel scanBooksParams);
+    Task<ScanBooksResultModel> ScanAvailableBooks(ScanBooksParamsModel scanBooksParams);
 }
