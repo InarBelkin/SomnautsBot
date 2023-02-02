@@ -38,6 +38,7 @@ public class SendErrorToUserMiddleware : ISendErrorToUserMiddleware
                 BookDoesntExistException => _uiResources.BookIdIsntCorrect,
                 BookExecutionException => _uiResources.BookExecutionError,
                 SaveDoesntExistException => _uiResources.SaveDoesntExist,
+                UserCurrentSaveIsNull => _uiResources.UserHasNoSaves,
                 _ => _uiResources.InternalServerError
             };
             try

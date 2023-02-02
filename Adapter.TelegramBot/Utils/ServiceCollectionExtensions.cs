@@ -20,7 +20,8 @@ public static class ServiceCollectionExtensions
         services.AddHostedService<TgBotHostedService>();
         services.AddScoped<ITgUpdateHandler, TgUpdateHandler>()
             .AddScoped<ITgCommandsHandler, TgCommandsHandler>()
-            .AddScoped<ITgButtonsHandler, TgButtonsHandler>();
+            .AddScoped<ITgButtonsHandler, TgButtonsHandler>()
+            .AddScoped<ITgMessagesHandler, TgMessagesHandler>();
 
         services.AddLocalizations();
         services.AddScoped<ISendErrorToUserMiddleware, SendErrorToUserMiddleware>();

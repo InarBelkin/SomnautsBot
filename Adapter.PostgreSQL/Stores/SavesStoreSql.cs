@@ -55,4 +55,12 @@ public class SavesStoreSql : ISavesStore
             .FirstOrDefaultAsync();
         return state ?? throw new SaveDoesntExistException();
     }
+
+    public async Task UpdateState(int saveId, ExpandoObject state)
+    {
+        await _db.BookSaves.Where(s => s.Id == saveId)
+            .ExecuteUpdateAsync(p =>
+                p.SetProperty(s => s.BookState, state)
+                    .SetProperty(s => s.UpdatedDate, DateTime.UtcNow));
+    }
 }

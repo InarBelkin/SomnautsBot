@@ -15,13 +15,15 @@ public class TgUpdateHandler : ITgUpdateHandler
     private readonly ITgCommandsHandler _commandsHandler;
     private readonly ITelegramUserProvider _telegramUserProvider;
     private readonly ITgButtonsHandler _tgButtonsHandler;
+    private readonly ITgMessagesHandler _tgMessagesHandler;
 
     public TgUpdateHandler(ITgCommandsHandler commandsHandler, ITgButtonsHandler tgButtonsHandler,
-        ITelegramUserProvider telegramUserProvider)
+        ITelegramUserProvider telegramUserProvider, ITgMessagesHandler tgMessagesHandler)
     {
         _commandsHandler = commandsHandler;
         _tgButtonsHandler = tgButtonsHandler;
         _telegramUserProvider = telegramUserProvider;
+        _tgMessagesHandler = tgMessagesHandler;
     }
 
     public async Task InvokeAsync(Update update, CancellationToken token)
@@ -41,7 +43,8 @@ public class TgUpdateHandler : ITgUpdateHandler
     {
         if (msg.From is null || msg.Text is null) return;
         _telegramUserProvider.AddUser(msg.From);
-        if (msg.Text.StartsWith("/") && msg.Text.Length > 1) await _commandsHandler.InvokeAsync(msg.Text);
+        if (msg.Text.StartsWith("/")) await _commandsHandler.InvokeAsync(msg.Text);
+        else await _tgMessagesHandler.InvokeAsync(msg.Text);
     }
 
     private async Task HandleButton(CallbackQuery updateCallbackQuery)

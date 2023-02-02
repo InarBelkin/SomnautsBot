@@ -69,22 +69,6 @@ public class TgCommandsHandler : ITgCommandsHandler
         });
     }
 
-    private async Task LoadCommand(string saveStringId)
-    {
-        var user = await _userProvider.GetUser();
-        if (int.TryParse(saveStringId, out var saveId))
-        {
-            var replica = await _savesService.GetCurrentReplica(saveId);
-            await _bot.SendTextMessageAsync(user.TelegramId, replica.Text,
-                replyMarkup: new ReplyKeyboardMarkup(replica.Answers.Select(a =>
-                    new[] { new KeyboardButton(a.Text) })) { ResizeKeyboard = true, OneTimeKeyboard = true });
-        }
-        else
-        {
-            throw new SaveDoesntExistException();
-        }
-    }
-
     private async Task IncorrectCommand()
     {
         var user = await _userProvider.GetUser();
@@ -177,6 +161,21 @@ public class TgCommandsHandler : ITgCommandsHandler
         {
             await _bot.SendTextMessageAsync(user.TelegramId,
                 _uiResources.BookIdIsntCorrect.WithErrorString(user.InterfaceLang));
+        }
+    }
+
+    private async Task LoadCommand(string saveStringId)
+    {
+        var user = await _userProvider.GetUser();
+        if (int.TryParse(saveStringId, out var saveId))
+        {
+            await _savesService.SwitchToSave(saveId);
+            var replica = await _savesService.GetCurrentReplica();
+            await _bot.PrintReplica(user, replica, _uiResources);
+        }
+        else
+        {
+            throw new SaveDoesntExistException();
         }
     }
 }

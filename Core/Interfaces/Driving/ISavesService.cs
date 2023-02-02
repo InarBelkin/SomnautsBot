@@ -8,5 +8,7 @@ public interface ISavesService
 {
     Task<Result<IEnumerable<BookSaveItemModel>>> GetSavesOfThisUser(Guid genId);
     Task CreateNewSave(Guid genId);
-    Task<ReplicaModel> GetCurrentReplica(int saveId);
+    Task SwitchToSave(int saveId);
+    Task<ReplicaModel> GetCurrentReplica();
+    Task<ReplicaModel> NextReplica(string answerText);
 }

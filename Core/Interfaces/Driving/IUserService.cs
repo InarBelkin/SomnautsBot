@@ -11,4 +11,6 @@ public interface IUserService
 
     Task<UserModel?> GetUserOrNull();
     Task UpdateLang(LangEnum lang);
+    Task<UserStoredModel> GetStoredUser();
+    Task UpdateCurrentSaveId(int id);
 }

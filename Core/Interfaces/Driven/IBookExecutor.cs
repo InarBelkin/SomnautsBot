@@ -11,4 +11,7 @@ public interface IBookExecutor
     public ValueTask<ExpandoObject> CreateInitState(BookHandleModel bookHandleModel);
 
     ValueTask<ReplicaModel> GetCurrentReplica(BookHandleModel book, ExpandoObject state, LangEnum language);
+
+    ValueTask<ReplicaModel> NextReplica(BookHandleModel book, ExpandoObject state, LangEnum language,
+        string? answerId, string answerText);
 }

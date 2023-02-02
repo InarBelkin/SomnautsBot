@@ -56,6 +56,29 @@ public sealed class BookExecutorJs : IBookExecutor
         });
     }
 
+    public ValueTask<ReplicaModel> NextReplica(BookHandleModel book, ExpandoObject state, LangEnum language,
+        string? answerId, string answerText)
+    {
+        return "Next replica error".WrapJintExceptions(() =>
+        {
+            var cached = GetModuleFromPool(book);
+            var replicaHandler = cached.Module.Get("replicaHandler");
+            var fun = replicaHandler.Get("nextReplica");
+            var arg = new NextReplicaArgs
+            {
+                answerId = answerId,
+                answerText = answerText,
+                language = language,
+                state = state,
+                engineModule = JsValue.FromObject(cached.Engine, new { }).AsObject()
+            };
+            var nextReplicaJsValue = cached.Engine.Invoke(fun, arg);
+            dynamic replicaExpando = nextReplicaJsValue.ToObject();
+            ReplicaModel replica = JsConversions.ConvertDynamicNextReplicaToReplica(replicaExpando);
+            return new ValueTask<ReplicaModel>(replica);
+        });
+    }
+
     private CachedJint GetModuleFromPool(BookHandleModel book)
     {
         return _booksModulesPool.GetModule(book.Description.GenId, () =>

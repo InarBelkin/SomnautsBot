@@ -17,6 +17,9 @@ public sealed class UiLocalization
     public required Dictionary<string, string> SelectBookLangNoCurrentBook { get; init; }
     public required Dictionary<string, string> CommandIsntCorrect { get; init; }
     public required Dictionary<string, string> SaveDoesntExist { get; init; }
+    public required Dictionary<string, string> TextWithoutSaves { get; init; }
+    public required Dictionary<string, string> CanWriteYourOwnText { get; init; }
+    public required Dictionary<string, string> UserHasNoSaves { get; init; }
     public required Dictionary<string, string> BookExecutionError { get; init; }
     public required Dictionary<string, string> InternalServerError { get; init; }
 }

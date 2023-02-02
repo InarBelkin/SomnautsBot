@@ -4,5 +4,6 @@ namespace Core.Interfaces.Driven;
 
 public interface IUserStore
 {
-    Task UpdateUser(UserModel user);
+    Task UpdateUser(UserStoredModel user);
+    Task<UserStoredModel> GetUser(int id);
 }

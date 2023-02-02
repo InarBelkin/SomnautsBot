@@ -15,4 +15,6 @@ public interface ISavesStore
 
     ///<exception cref="SaveDoesntExistException"></exception>
     Task<SaveStateModel> GetStateBySaveId(int saveId);
+
+    Task UpdateState(int saveId, ExpandoObject state);
 }
