@@ -103,7 +103,7 @@ public class TgCommandsHandler : ITgCommandsHandler
         text.Append("\n\n");
         foreach (var (genId, name, description, langEnums, countOfSaves) in books)
         {
-            text.AppendFormat(_uiResources.SelectBookDescription.WithErrorString(user.InterfaceLang),
+            text.AppendFormat(_uiResources.SelectBookItemDescription.WithErrorString(user.InterfaceLang),
                 name.NearestLang(user.InterfaceLang),
                 description.NearestLang(user.InterfaceLang),
                 string.Join<LangEnum>(",", langEnums),
@@ -129,7 +129,8 @@ public class TgCommandsHandler : ITgCommandsHandler
                     text.Append("\n\n");
                     foreach (var (id, createdDate, updatedDate, langEnum) in saves)
                     {
-                        text.AppendFormat(_uiResources.SelectBookSaveItem.WithErrorString(user.InterfaceLang),
+                        text.AppendFormat(
+                            _uiResources.SelectBookSaveItemDescription.WithErrorString(user.InterfaceLang),
                             createdDate.ToUniversalTime().ToString(dateTimeFormat) + " UTC",
                             updatedDate.ToUniversalTime().ToString(dateTimeFormat) + " UTC",
                             langEnum,
