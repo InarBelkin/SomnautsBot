@@ -31,9 +31,15 @@ public static class UtilsExtensions
         }
     }
 
-    // public static bool TryGetSuccess<T>(this Result<T> result, [MaybeNullWhen(false)] out T success)
-    // {
-    //     result.Map(arg => )
-    //     result.Match(arg => success = arg, exception => )
-    // }
+    public static T GetValOrThrow<T>(this Result<T> result)
+    {
+        if (result.IsSuccess)
+        {
+            var fieldValue = typeof(Result<T>).GetField("Value", BindingFlags.NonPublic | BindingFlags.Instance);
+            return (T)fieldValue!.GetValue(result)!;
+        }
+
+        var fieldException = typeof(Result<T>).GetField("exception", BindingFlags.NonPublic | BindingFlags.Instance);
+        throw (Exception)fieldException!.GetValue(result)!;
+    }
 }

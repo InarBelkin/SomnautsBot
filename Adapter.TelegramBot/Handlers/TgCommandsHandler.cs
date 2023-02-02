@@ -2,6 +2,7 @@
 using Adapter.TelegramBot.Interfaces;
 using Adapter.TelegramBot.Utils;
 using Core.Interfaces.Driving;
+using Core.Models.Exceptions;
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
@@ -50,7 +51,20 @@ public class TgCommandsHandler : ITgCommandsHandler
             case ["read", { } bookStringId]:
                 await ReadCommand(bookStringId);
                 break;
+            case ["newsave", { } bookStringId]:
+                await NewSaveCommand(bookStringId);
+                break;
+            default:
+                await IncorrectCommand();
+                break;
         }
+    }
+
+    private async Task IncorrectCommand()
+    {
+        var user = await _userProvider.GetUser();
+        await _bot.SendTextMessageAsync(user.TelegramId,
+            _uiResources.CommandIsntCorrect.WithErrorString(user.InterfaceLang));
     }
 
     private async Task StartCommand()
@@ -122,6 +136,33 @@ public class TgCommandsHandler : ITgCommandsHandler
             if (result.IsSuccess) return;
         }
 
-        await _bot.SendTextMessageAsync(user.TelegramId, "Book's id isn't correct");
+        await _bot.SendTextMessageAsync(user.TelegramId,
+            _uiResources.BookIdIsntCorrect.WithErrorString(user.InterfaceLang));
+    }
+
+    private async Task NewSaveCommand(string bookStringId)
+    {
+        var user = await _userProvider.GetUser();
+        if (Guid.TryParse(bookStringId, out var genId))
+            try
+            {
+                await _savesService.CreateNewSave(genId);
+                await _bot.SendTextMessageAsync(user.TelegramId, "Save created"); //TODO: change to save
+            }
+            catch (Exception e)
+            {
+                var textDict = e switch
+                {
+                    BookDoesntExistException => _uiResources.BookIdIsntCorrect,
+                    BookExecutionError => _uiResources.BookExecutionError,
+                    _ => _uiResources.InternalServerError
+                };
+                await _bot.SendTextMessageAsync(user.TelegramId,
+                    textDict.WithErrorString(user.InterfaceLang));
+                throw;
+            }
+        else
+            await _bot.SendTextMessageAsync(user.TelegramId,
+                _uiResources.BookIdIsntCorrect.WithErrorString(user.InterfaceLang));
     }
 }

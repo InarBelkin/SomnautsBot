@@ -49,7 +49,7 @@ public class BooksServiceTests
 
         _booksStoreMock.Setup(b => b.GetAll(false)).ReturnsAsync(existingBooks.ToList());
         var booksService = new BooksService(_optionsMock.Object, _booksStoreMock.Object, _userServiceMock.Object,
-            _savesStoreMock.Object);
+            _savesStoreMock.Object, Array.Empty<INeedCleanAfterBooksRescan>());
         // Act
         await booksService.UpdateBooks(scanParams, scannedBooks.ToList());
 

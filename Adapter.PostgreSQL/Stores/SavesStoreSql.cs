@@ -1,8 +1,11 @@
-﻿using Core.Interfaces.Driven;
+﻿using System.Dynamic;
+using Adapter.PostgreSQL.Entities;
+using Core.Interfaces.Driven;
 using Core.Models.Exceptions;
 using Core.Models.Save;
 using LanguageExt.Common;
 using Microsoft.EntityFrameworkCore;
+using Utils.Language;
 
 namespace Adapter.PostgreSQL.Stores;
 
@@ -25,5 +28,23 @@ public class SavesStoreSql : ISavesStore
             .Select(s => new BookSaveItemModel(s.Id, s.CreatedDate, s.UpdatedDate, s.Language))
             .ToListAsync();
         return saves;
+    }
+
+    public async Task CreateNewSave(int userId, Guid genId, ExpandoObject state, LangEnum language)
+    {
+        var book = await _db.Books.Where(b => b.Description.GenId == genId).FirstOrDefaultAsync();
+        var user = await _db.Users.Where(u => u.Id == userId).FirstOrDefaultAsync();
+        if (book == null) throw new BookDoesntExistException();
+        if (user == null) throw new UserDoesntExistException();
+        _db.BookSaves.Add(new BookSave
+        {
+            Book = book,
+            User = user,
+            Language = language,
+            CreatedDate = DateTime.UtcNow,
+            UpdatedDate = DateTime.UtcNow,
+            BookState = state
+        });
+        await _db.SaveChangesAsync();
     }
 }

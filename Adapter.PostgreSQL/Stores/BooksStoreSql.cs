@@ -1,6 +1,8 @@
 ﻿using Adapter.PostgreSQL.Entities;
 using Core.Interfaces.Driven;
 using Core.Models.Book;
+using Core.Models.Exceptions;
+using LanguageExt.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace Adapter.PostgreSQL.Stores;
@@ -12,6 +14,15 @@ public class BooksStoreSql : IBooksStore
     public BooksStoreSql(SomnContext db)
     {
         _db = db;
+    }
+
+    public async Task<Result<BookHandleModel>> GetOne(Guid genId, bool onlyVisible = true)
+    {
+        var book = await _db.Books.Where(b => b.Description.GenId != genId || !onlyVisible || b.IsVisibleToUsers)
+            .FirstOrDefaultAsync();
+        return book == null
+            ? new Result<BookHandleModel>(new BookDoesntExistException())
+            : new BookHandleModel(book.ContainingFolder, book.IsVisibleToUsers, book.Description);
     }
 
     public async Task<IList<BookHandleModel>> GetAll(bool onlyVisible)

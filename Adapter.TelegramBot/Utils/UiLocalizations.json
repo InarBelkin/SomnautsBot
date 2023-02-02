@@ -23,6 +23,10 @@
     "ru": "Создать новое сохранение: {0}",
     "en": "Select a save:"
   },
+  "bookIdIsntCorrect": {
+    "ru": "Id книги некорректное",
+    "en": "Book id isn't correct"
+  },
   "wrongLoadCode": {
     "ru": "Такого сохранения не существует",
     "en": "Select a save:"
@@ -46,5 +50,17 @@
   "selectBookLangNoCurrentBook": {
     "ru": "В данный момент ни одна книга не читается, чтобы выбрать для неё язык. Используйте команду /books чтобы начать читать новую книгу.",
     "en": "You can't select current book language because you don't have a current book. Use /books command to start a new book."
+  },
+  "commandIsntCorrect": {
+    "ru": "Некорректная команда",
+    "en": "Command isn't correct"
+  },
+  "bookExecutionError": {
+    "ru": "Ошибка при попытке выполнить скрипт книги",
+    "en": ""
+  },
+  "internalServerError": {
+    "ru": "Внутренняя ошибка сервера",
+    "en": "Internal server error"
   }
 }

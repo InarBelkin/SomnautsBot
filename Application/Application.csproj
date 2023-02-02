@@ -14,6 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\Adapter.JsExecutor\Adapter.JsExecutor.csproj"/>
         <ProjectReference Include="..\Adapter.PostgreSQL\Adapter.PostgreSQL.csproj"/>
         <ProjectReference Include="..\Adapter.TelegramBot\Adapter.TelegramBot.csproj"/>
         <ProjectReference Include="..\Adapter.WebApi\Adapter.WebApi.csproj"/>

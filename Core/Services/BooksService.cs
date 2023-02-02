@@ -11,16 +11,18 @@ namespace Core.Services;
 public class BooksService : IBooksService
 {
     private readonly IBooksStore _booksStore;
+    private readonly IEnumerable<INeedCleanAfterBooksRescan> _cleanableServices;
     private readonly BooksOptions _options;
     private readonly ISavesStore _savesStore;
     private readonly IUserService _userService;
 
     public BooksService(IOptions<BooksOptions> options, IBooksStore booksStore, IUserService userService,
-        ISavesStore savesStore)
+        ISavesStore savesStore, IEnumerable<INeedCleanAfterBooksRescan> cleanableServices)
     {
         _booksStore = booksStore;
         _userService = userService;
         _savesStore = savesStore;
+        _cleanableServices = cleanableServices;
         _options = options.Value;
     }
 
@@ -59,6 +61,7 @@ public class BooksService : IBooksService
         }
 
         await UpdateBooks(scanBooksParams, correctBooks);
+        foreach (var service in _cleanableServices) await service.Clean();
 
         return result;
     }
