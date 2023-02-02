@@ -47,4 +47,12 @@ public class SavesStoreSql : ISavesStore
         });
         await _db.SaveChangesAsync();
     }
+
+    public async Task<SaveStateModel> GetStateBySaveId(int saveId)
+    {
+        var state = await _db.BookSaves.Where(s => s.Id == saveId)
+            .Select(s => new SaveStateModel(s.Id, s.User.Id, s.Book.Description.GenId, s.Language, s.BookState))
+            .FirstOrDefaultAsync();
+        return state ?? throw new SaveDoesntExistException();
+    }
 }

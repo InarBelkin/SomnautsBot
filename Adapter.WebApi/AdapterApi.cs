@@ -32,7 +32,7 @@ public class AdapterApi
         app.UseAuthorization();
 
         app.MapControllers();
-
+        app.Run();
         return app.RunAsync();
     }
 }

@@ -2,6 +2,7 @@
 using Adapter.TelegramBot.Interfaces;
 using Adapter.TelegramBot.Utils;
 using Core.Interfaces.Driving;
+using Core.Models.Exceptions;
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
@@ -17,7 +18,7 @@ public interface ITgCommandsHandler
 
 public class TgCommandsHandler : ITgCommandsHandler
 {
-    private readonly IBooksService _booksService;
+    private readonly IBooksHandleService _booksHandleService;
     private readonly ITelegramBotClient _bot;
     private readonly ISavesService _savesService;
     private readonly ISendErrorToUserMiddleware _sendErrorToUserMiddleware;
@@ -25,12 +26,13 @@ public class TgCommandsHandler : ITgCommandsHandler
     private readonly ITelegramUserProvider _userProvider;
 
     public TgCommandsHandler(UiLocalization uiResources, ITelegramBotClient bot, ITelegramUserProvider userProvider,
-        IBooksService booksService, ISavesService savesService, ISendErrorToUserMiddleware sendErrorToUserMiddleware)
+        IBooksHandleService booksHandleService, ISavesService savesService,
+        ISendErrorToUserMiddleware sendErrorToUserMiddleware)
     {
         _uiResources = uiResources;
         _bot = bot;
         _userProvider = userProvider;
-        _booksService = booksService;
+        _booksHandleService = booksHandleService;
         _savesService = savesService;
         _sendErrorToUserMiddleware = sendErrorToUserMiddleware;
     }
@@ -57,11 +59,30 @@ public class TgCommandsHandler : ITgCommandsHandler
                 case ["newsave", { } bookStringId]:
                     await NewSaveCommand(bookStringId);
                     break;
+                case ["load", { } saveStringId]:
+                    await LoadCommand(saveStringId);
+                    break;
                 default:
                     await IncorrectCommand();
                     break;
             }
         });
+    }
+
+    private async Task LoadCommand(string saveStringId)
+    {
+        var user = await _userProvider.GetUser();
+        if (int.TryParse(saveStringId, out var saveId))
+        {
+            var replica = await _savesService.GetCurrentReplica(saveId);
+            await _bot.SendTextMessageAsync(user.TelegramId, replica.Text,
+                replyMarkup: new ReplyKeyboardMarkup(replica.Answers.Select(a =>
+                    new[] { new KeyboardButton(a.Text) })) { ResizeKeyboard = true, OneTimeKeyboard = true });
+        }
+        else
+        {
+            throw new SaveDoesntExistException();
+        }
     }
 
     private async Task IncorrectCommand()
@@ -91,7 +112,7 @@ public class TgCommandsHandler : ITgCommandsHandler
 
     private async Task BooksCommand()
     {
-        var books = await _booksService.GetBooks();
+        var books = await _booksHandleService.GetBooks();
         var user = await _userProvider.GetUser();
         var text = new StringBuilder();
         text.Append(_uiResources.SelectBook.WithErrorString(user.InterfaceLang));

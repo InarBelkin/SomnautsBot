@@ -8,7 +8,7 @@ using Utils;
 
 namespace Core.Services;
 
-public class BooksService : IBooksService
+public class BooksHandleService : IBooksHandleService
 {
     private readonly IBooksStore _booksStore;
     private readonly IEnumerable<INeedCleanAfterBooksRescan> _cleanableServices;
@@ -16,7 +16,7 @@ public class BooksService : IBooksService
     private readonly ISavesStore _savesStore;
     private readonly IUserService _userService;
 
-    public BooksService(IOptions<BooksOptions> options, IBooksStore booksStore, IUserService userService,
+    public BooksHandleService(IOptions<BooksOptions> options, IBooksStore booksStore, IUserService userService,
         ISavesStore savesStore, IEnumerable<INeedCleanAfterBooksRescan> cleanableServices)
     {
         _booksStore = booksStore;

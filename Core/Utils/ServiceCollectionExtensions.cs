@@ -10,7 +10,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddCore(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IUserService, UserService>()
-            .AddScoped<IBooksService, BooksService>()
+            .AddScoped<IBooksHandleService, BooksHandleService>()
             .AddScoped<ISavesService, SavesService>();
 
         return services;

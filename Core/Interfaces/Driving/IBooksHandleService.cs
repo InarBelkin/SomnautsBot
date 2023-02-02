@@ -2,7 +2,7 @@
 
 namespace Core.Interfaces.Driving;
 
-public interface IBooksService
+public interface IBooksHandleService
 {
     Task<IList<BookHandleModel>> GetListOfHandleBooks(bool onlyVisible = true);
     Task<IEnumerable<BookModel>> GetBooks();

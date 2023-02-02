@@ -31,10 +31,6 @@
     "ru": "Такого сохранения не существует",
     "en": "Select a save:"
   },
-  "bookDoesntExists": {
-    "ru": "Такой книги не сущетсвует",
-    "en": "Select a save:"
-  },
   "selectUiLang": {
     "ru": "Select interface language:\nВыберите язык интерфейса:",
     "en": "Select interface language:\nВыберите язык интерфейса:"
@@ -50,6 +46,10 @@
   "selectBookLangNoCurrentBook": {
     "ru": "В данный момент ни одна книга не читается, чтобы выбрать для неё язык. Используйте команду /books чтобы начать читать новую книгу.",
     "en": "You can't select current book language because you don't have a current book. Use /books command to start a new book."
+  },
+  "saveDoesntExist": {
+    "ru": "Такого сохранения не существует",
+    "en": ""
   },
   "commandIsntCorrect": {
     "ru": "Некорректная команда",

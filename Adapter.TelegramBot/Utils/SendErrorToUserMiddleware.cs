@@ -36,7 +36,8 @@ public class SendErrorToUserMiddleware : ISendErrorToUserMiddleware
             var textDict = e switch
             {
                 BookDoesntExistException => _uiResources.BookIdIsntCorrect,
-                BookExecutionError => _uiResources.BookExecutionError,
+                BookExecutionException => _uiResources.BookExecutionError,
+                SaveDoesntExistException => _uiResources.SaveDoesntExist,
                 _ => _uiResources.InternalServerError
             };
             try

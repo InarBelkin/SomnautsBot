@@ -8,24 +8,24 @@ namespace Adapter.WebApi.Controllers;
 [Route("[controller]")]
 public class BooksHandleController : ControllerBase
 {
-    private readonly IBooksService _booksService;
+    private readonly IBooksHandleService _booksHandleService;
 
-    public BooksHandleController(IBooksService booksService)
+    public BooksHandleController(IBooksHandleService booksHandleService)
     {
-        _booksService = booksService;
+        _booksHandleService = booksHandleService;
     }
 
     [HttpPost("scan")]
     public async Task<ActionResult<ScanBooksResultModel>> Scan(ScanBooksParamsModel dto)
     {
-        var result = await _booksService.ScanAvailableBooks(dto);
+        var result = await _booksHandleService.ScanAvailableBooks(dto);
         return result;
     }
 
     [HttpGet("list")]
     public async Task<IActionResult> GetLists()
     {
-        var result = await _booksService.GetListOfHandleBooks();
+        var result = await _booksHandleService.GetListOfHandleBooks();
         return Ok(result);
     }
 }
