@@ -1,0 +1,16 @@
+{
+  "genId": "05c467bb-feb9-4fa5-a140-8d7ff7d6b091",
+  "name": {
+    "ru": "Купи слона (кринге)"
+  },
+  "description": {
+    "ru": "Книга, где тебе надо купить слона"
+  },
+  "languages": [
+    "ru"
+  ],
+  "parseMode": "plainText",
+  "bookVersion": 1,
+  "engineVersion": "01.00",
+  "technologies": []
+}
