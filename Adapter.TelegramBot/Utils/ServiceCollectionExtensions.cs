@@ -23,6 +23,7 @@ public static class ServiceCollectionExtensions
             .AddScoped<ITgButtonsHandler, TgButtonsHandler>();
 
         services.AddLocalizations();
+        services.AddScoped<ISendErrorToUserMiddleware, SendErrorToUserMiddleware>();
 
         services.AddScoped<ITelegramUserProvider, TelegramUserProvider>();
         services.AddScoped<IUserProvider>(provider => provider.GetRequiredService<ITelegramUserProvider>());

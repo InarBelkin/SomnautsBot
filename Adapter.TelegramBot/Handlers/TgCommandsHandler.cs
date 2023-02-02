@@ -2,7 +2,6 @@
 using Adapter.TelegramBot.Interfaces;
 using Adapter.TelegramBot.Utils;
 using Core.Interfaces.Driving;
-using Core.Models.Exceptions;
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
@@ -21,43 +20,48 @@ public class TgCommandsHandler : ITgCommandsHandler
     private readonly IBooksService _booksService;
     private readonly ITelegramBotClient _bot;
     private readonly ISavesService _savesService;
+    private readonly ISendErrorToUserMiddleware _sendErrorToUserMiddleware;
     private readonly UiLocalization _uiResources;
     private readonly ITelegramUserProvider _userProvider;
 
     public TgCommandsHandler(UiLocalization uiResources, ITelegramBotClient bot, ITelegramUserProvider userProvider,
-        IBooksService booksService, ISavesService savesService)
+        IBooksService booksService, ISavesService savesService, ISendErrorToUserMiddleware sendErrorToUserMiddleware)
     {
         _uiResources = uiResources;
         _bot = bot;
         _userProvider = userProvider;
         _booksService = booksService;
         _savesService = savesService;
+        _sendErrorToUserMiddleware = sendErrorToUserMiddleware;
     }
 
     public async Task InvokeAsync(string command)
     {
-        var commandWords = command.ToLower().Split(new[] { '/', '_', ' ' }, StringSplitOptions.RemoveEmptyEntries);
-        switch (commandWords)
+        await _sendErrorToUserMiddleware.Send(async () =>
         {
-            case ["start"] or ["help"]:
-                await StartCommand();
-                break;
-            case ["interfacelang"]:
-                await InterfaceLangCommand();
-                break;
-            case ["books"]:
-                await BooksCommand();
-                break;
-            case ["read", { } bookStringId]:
-                await ReadCommand(bookStringId);
-                break;
-            case ["newsave", { } bookStringId]:
-                await NewSaveCommand(bookStringId);
-                break;
-            default:
-                await IncorrectCommand();
-                break;
-        }
+            var commandWords = command.ToLower().Split(new[] { '/', '_', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            switch (commandWords)
+            {
+                case ["start"] or ["help"]:
+                    await StartCommand();
+                    break;
+                case ["interfacelang"]:
+                    await InterfaceLangCommand();
+                    break;
+                case ["books"]:
+                    await BooksCommand();
+                    break;
+                case ["read", { } bookStringId]:
+                    await ReadCommand(bookStringId);
+                    break;
+                case ["newsave", { } bookStringId]:
+                    await NewSaveCommand(bookStringId);
+                    break;
+                default:
+                    await IncorrectCommand();
+                    break;
+            }
+        });
     }
 
     private async Task IncorrectCommand()
@@ -144,25 +148,14 @@ public class TgCommandsHandler : ITgCommandsHandler
     {
         var user = await _userProvider.GetUser();
         if (Guid.TryParse(bookStringId, out var genId))
-            try
-            {
-                await _savesService.CreateNewSave(genId);
-                await _bot.SendTextMessageAsync(user.TelegramId, "Save created"); //TODO: change to save
-            }
-            catch (Exception e)
-            {
-                var textDict = e switch
-                {
-                    BookDoesntExistException => _uiResources.BookIdIsntCorrect,
-                    BookExecutionError => _uiResources.BookExecutionError,
-                    _ => _uiResources.InternalServerError
-                };
-                await _bot.SendTextMessageAsync(user.TelegramId,
-                    textDict.WithErrorString(user.InterfaceLang));
-                throw;
-            }
+        {
+            await _savesService.CreateNewSave(genId);
+            await _bot.SendTextMessageAsync(user.TelegramId, "Save created"); //TODO: change to save
+        }
         else
+        {
             await _bot.SendTextMessageAsync(user.TelegramId,
                 _uiResources.BookIdIsntCorrect.WithErrorString(user.InterfaceLang));
+        }
     }
 }

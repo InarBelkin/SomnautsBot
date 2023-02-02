@@ -6,6 +6,6 @@ namespace Adapter.TelegramBot.Interfaces;
 
 public interface ITelegramUserProvider : IUserProvider
 {
-    new Task<UserTelegramModel> GetUser();
+    new ValueTask<UserTelegramModel> GetUser();
     void AddUser(User user);
 }

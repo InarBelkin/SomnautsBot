@@ -18,7 +18,7 @@ public class TelegramUserProvider : ITelegramUserProvider
         _userStore = userStore;
     }
 
-    public async Task<UserTelegramModel> GetUser()
+    public async ValueTask<UserTelegramModel> GetUser()
     {
         return _userModel ??=
             await _userStore.GetOrCreateUser(_tgUser ?? throw new ArgumentException("User hasn't been added"));
@@ -29,7 +29,7 @@ public class TelegramUserProvider : ITelegramUserProvider
         _tgUser = user;
     }
 
-    async Task<UserModel> IUserProvider.GetUser()
+    async ValueTask<UserModel> IUserProvider.GetUser()
     {
         return await GetUser();
     }

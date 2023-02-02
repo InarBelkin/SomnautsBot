@@ -17,7 +17,7 @@ public class UserService : IUserService
         _userStore = userStore;
     }
 
-    public async Task<UserModel> GetUser()
+    public async ValueTask<UserModel> GetUser()
     {
         return await GetUserOrNull() ?? throw new UserDoesntExistException();
     }

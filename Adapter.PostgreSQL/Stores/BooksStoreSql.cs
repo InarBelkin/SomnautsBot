@@ -18,7 +18,7 @@ public class BooksStoreSql : IBooksStore
 
     public async Task<Result<BookHandleModel>> GetOne(Guid genId, bool onlyVisible = true)
     {
-        var book = await _db.Books.Where(b => b.Description.GenId != genId || !onlyVisible || b.IsVisibleToUsers)
+        var book = await _db.Books.Where(b => b.Description.GenId == genId && (!onlyVisible || b.IsVisibleToUsers))
             .FirstOrDefaultAsync();
         return book == null
             ? new Result<BookHandleModel>(new BookDoesntExistException())

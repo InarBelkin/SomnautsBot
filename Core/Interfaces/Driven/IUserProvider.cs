@@ -4,6 +4,6 @@ namespace Core.Interfaces.Driven;
 
 public interface IUserProvider
 {
-    public Task<UserModel> GetUser();
+    public ValueTask<UserModel> GetUser();
     public bool HasUser();
 }
