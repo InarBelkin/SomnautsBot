@@ -1,4 +1,4 @@
-namespace Core.Tests;
+namespace Adapter.PostgreSQL.Tests;
 
 public class UnitTest1
 {

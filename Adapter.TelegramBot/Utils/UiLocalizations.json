@@ -1,0 +1,92 @@
+{
+  "help": {
+    "ru": "Somnauts - это плеер интерактивных книг.\nИспользуйте следующие команды:\n/help - чтобы посмотреть этот список ещё раз \n/interfacelang - чтобы сменить язык интерфейса\n/books - чтобы посмотреть список доступных книг",
+    "en": "Somnauts is an interactive book player.\nUse following commands:\n/help - to view this list again\n/interfacelang - to change interface language\n/books - to view the list of available books",
+    "de": "Somnauts ist ein interaktiver Buchspieler.\nVerwenden Sie die folgenden Befehle:\n/help um diese Liste erneut anzuzeigen\n/interfacelang -um die Sprache der Benutzeroberfläche zu ändern\n/books - um die Liste der verfügbaren Bücher anzuzeigen"
+  },
+  "selectBook": {
+    "ru": "Выберите книгу:",
+    "en": "Select a book:",
+    "de": "Wählen Sie ein Buch aus:"
+  },
+  "selectBookItemDescription": {
+    "ru": "<b>{0}</b>\n{1}\nЯзыки: {2}\nКол-во сохранений: {3}\nЧитать: {4}",
+    "en": "<b>{0}</b>\n{1}\nLanguages: {2}\nCount of saves: {3}\nRead: {4}",
+    "de": "<b>{0}</b>\n{1}\nSprachen: {2}\nAnzahl der Speicherungen: {3}\nLesen: {4}"
+  },
+  "selectBookSave": {
+    "ru": "Выберите сохранение или создайте новое:",
+    "en": "Select a save or create a new one:",
+    "de": "Wählen Sie Speichern aus oder erstellen Sie einen neuen:"
+  },
+  "selectBookSaveItemDescription": {
+    "ru": "Создано: {0}\nПоследний раз запущено: {1}\nЯзык: {2}\nЗагрузить: {3}",
+    "en": "Created at: {0}\nLast play: {1}\nLanguage: {2}\nLoad: {3}",
+    "de": "Geschaffen: {0}\nLetztes Spiel: {1}\nSprache: {2}\nBelastung: {3}"
+  },
+  "selectBookSaveCreate": {
+    "ru": "Создать новое сохранение: {0}",
+    "en": "Create a new save: {0}",
+    "de": "Neue Sicherung erstellen: {0}"
+  },
+  "selectUiLang": {
+    "ru": "Select interface language:\nВыберите язык интерфейса:\nSprache der Benutzeroberfläche auswählen:",
+    "en": "Select interface language:\nВыберите язык интерфейса:\nSprache der Benutzeroberfläche auswählen:",
+    "de": "Select interface language:\nВыберите язык интерфейса:\nSprache der Benutzeroberfläche auswählen:"
+  },
+  "uiLangSelected": {
+    "ru": "Язык интерфейса изменён на русский",
+    "en": "Interface language changed to English",
+    "de": "Sprache der Benutzeroberfläche auf Deutsch geändert"
+  },
+  "selectBookLang": {
+    "ru": "Выберите язык этой книги:",
+    "en": "Select current book language:",
+    "de": "Aktuelle Buchsprache auswählen:"
+  },
+  "selectBookLangNoCurrentBook": {
+    "ru": "В данный момент ни одна книга не читается, чтобы выбрать для неё язык. Используйте команду /books чтобы начать читать новую книгу.",
+    "en": "You can't select current book language because you don't have a current book. Use /books command to start a new book.",
+    "de": "Sie können die aktuelle Buchsprache nicht auswählen, da Sie kein aktuelles Buch haben. Verwenden Sie den Befehl /books, um ein neues Buch zu beginnen."
+  },
+  "canWriteYourOwnText": {
+    "ru": "Можно написать свой вариант ответа",
+    "en": "You can write your own answer",
+    "de": "Sie können Ihre eigene Antwortversion schreiben"
+  },
+  "bookIdIsntCorrect": {
+    "ru": "Id книги некорректное",
+    "en": "Book id isn't correct",
+    "de": "Die Buch-ID ist falsch"
+  },
+  "bookExecutionError": {
+    "ru": "Ошибка при попытке выполнить скрипт книги",
+    "en": "Error when trying to execute the book script",
+    "de": "Fehler beim Versuch, das Buchskript auszuführen"
+  },
+  "saveDoesntExist": {
+    "ru": "Такого сохранения не существует",
+    "en": "Save doesn't exist",
+    "de": "Speichern existiert nicht"
+  },
+  "userHasNoSaves": {
+    "ru": "У вас отсутствуют текущие сохранения",
+    "en": "You have no current saves",
+    "de": "Sie haben keine aktuellen Speichervorgänge"
+  },
+  "internalServerError": {
+    "ru": "Внутренняя ошибка сервера",
+    "en": "Internal server error",
+    "de": "Interner Serverfehler"
+  },
+  "textWithoutSaves": {
+    "ru": "Используйте команду /help,  чтобы открыть список команд",
+    "en": "Use /help command to see list of all commands",
+    "de": "Verwenden Sie den Befehl /help, um die Befehlsliste zu öffnen"
+  },
+  "commandIsntCorrect": {
+    "ru": "Некорректная команда",
+    "en": "Incorrect command",
+    "de": "Falscher Befehl"
+  }
+}

@@ -5,9 +5,18 @@
         <Nullable>enable</Nullable>
         <WarningsAsErrors>Nullable</WarningsAsErrors>
         <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>c975ec9d-2873-4dd5-9952-e51b25d2f73d</UserSecretsId>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Adapter.JsExecutor\Adapter.JsExecutor.csproj"/>
+        <ProjectReference Include="..\Adapter.PostgreSQL\Adapter.PostgreSQL.csproj"/>
+        <ProjectReference Include="..\Adapter.TelegramBot\Adapter.TelegramBot.csproj"/>
         <ProjectReference Include="..\Adapter.WebApi\Adapter.WebApi.csproj"/>
         <ProjectReference Include="..\Core\Core.csproj"/>
     </ItemGroup>
